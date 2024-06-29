@@ -42,7 +42,7 @@ pub fn link(target_os: &str, target_triple: &str, out_dir: &Path) {
     if !cfg!(feature = "fltk-shared") {
         println!("cargo:rustc-link-lib=static=fltk");
 
-        if !cfg!(features = "no-images") {
+        if !cfg!(feature = "no-images") {
             println!("cargo:rustc-link-lib=static=fltk_images");
 
             if cfg!(feature = "system-libpng") {
@@ -88,6 +88,9 @@ pub fn link(target_os: &str, target_triple: &str, out_dir: &Path) {
                 let darwin_version: i32 = utils::get_taget_darwin_major_version().unwrap();
                 if darwin_version > 19 {
                     println!("cargo:rustc-link-lib=framework=UniformTypeIdentifiers");
+                }
+                if darwin_version > 23 {
+                    println!("cargo:rustc-link-lib=framework=ScreenCaptureKit");
                 }
                 println!("cargo:rustc-link-lib=framework=Carbon");
                 println!("cargo:rustc-link-lib=framework=Cocoa");
